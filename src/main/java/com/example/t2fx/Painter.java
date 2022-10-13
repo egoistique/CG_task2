@@ -100,12 +100,10 @@ public class Painter extends Application {
                         Double.parseDouble(y0.getText()) + CANVASHEIGHT / 2,
                         Double.parseDouble(width.getText()), Double.parseDouble(height.getText()));
 
-
                 double x = Double.parseDouble(xTran.getText());
                 double y = Double.parseDouble(yTran.getText());
 
                 arr = Translation.translation(arr, x, y);
-
 
                 draw(arr, context);
 
