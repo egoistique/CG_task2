@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 
 public class Painter extends Application {
 
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         root.getChildren().add(canvBox);
         root.getChildren().add(strings);
 
@@ -87,15 +87,7 @@ public class Painter extends Application {
                         Double.parseDouble(y0.getText()) + CANVASHEIGHT / 2,
                         Double.parseDouble(width.getText()), Double.parseDouble(height.getText()));
 
-                Point2D p0 = new Point2D(arr[0][0], arr[0][1]);
-                Point2D p1 = new Point2D(arr[1][0], arr[1][1]);
-                Point2D p2 = new Point2D(arr[2][0], arr[2][1]);
-                Point2D p3 = new Point2D(arr[3][0], arr[3][1]);
-
-                context.strokeLine(p0.getX(), p0.getY(), p1.getX(), p1.getY());
-                context.strokeLine(p0.getX(), p0.getY(), p2.getX(), p2.getY());
-                context.strokeLine(p2.getX(), p2.getY(), p3.getX(), p3.getY());
-                context.strokeLine(p3.getX(), p3.getY(), p1.getX(), p1.getY());
+                draw(arr, context);
 
             }
         });
@@ -115,15 +107,7 @@ public class Painter extends Application {
                 arr = Translation.translation(arr, x, y);
 
 
-                Point2D p0 = new Point2D(arr[0][0], arr[0][1]);
-                Point2D p1 = new Point2D(arr[1][0], arr[1][1]);
-                Point2D p2 = new Point2D(arr[2][0], arr[2][1]);
-                Point2D p3 = new Point2D(arr[3][0], arr[3][1]);
-
-                context.strokeLine(p0.getX(), p0.getY(), p1.getX(), p1.getY());
-                context.strokeLine(p0.getX(), p0.getY(), p2.getX(), p2.getY());
-                context.strokeLine(p2.getX(), p2.getY(), p3.getX(), p3.getY());
-                context.strokeLine(p3.getX(), p3.getY(), p1.getX(), p1.getY());
+                draw(arr, context);
 
             }
         });
@@ -140,16 +124,7 @@ public class Painter extends Application {
 
                 Point2D p = new Point2D(arr[0][0], arr[0][1]);
                 arr = Scale.scale(arr, p, s);
-                Point2D p0 = new Point2D(arr[0][0], arr[0][1]);
-                Point2D p1 = new Point2D(arr[1][0], arr[1][1]);
-                Point2D p2 = new Point2D(arr[2][0], arr[2][1]);
-                Point2D p3 = new Point2D(arr[3][0], arr[3][1]);
-
-
-                context.strokeLine(p0.getX(), p0.getY(), p1.getX(), p1.getY());
-                context.strokeLine(p0.getX(), p0.getY(), p2.getX(), p2.getY());
-                context.strokeLine(p2.getX(), p2.getY(), p3.getX(), p3.getY());
-                context.strokeLine(p3.getX(), p3.getY(), p1.getX(), p1.getY());
+                draw(arr, context);
 
             }
         });
@@ -165,15 +140,7 @@ public class Painter extends Application {
                 double f = Double.parseDouble(amount.getText());
                 Point2D p = new Point2D(arr[0][0], arr[0][1]);
                 arr = Compression.compression(arr, p, f);
-                Point2D p0 = new Point2D(arr[0][0], arr[0][1]);
-                Point2D p1 = new Point2D(arr[1][0], arr[1][1]);
-                Point2D p2 = new Point2D(arr[2][0], arr[2][1]);
-                Point2D p3 = new Point2D(arr[3][0], arr[3][1]);
-
-                context.strokeLine(p0.getX(), p0.getY(), p1.getX(), p1.getY());
-                context.strokeLine(p0.getX(), p0.getY(), p2.getX(), p2.getY());
-                context.strokeLine(p2.getX(), p2.getY(), p3.getX(), p3.getY());
-                context.strokeLine(p3.getX(), p3.getY(), p1.getX(), p1.getY());
+                draw(arr, context);
             }
         });
         buttonSpin.setOnAction(new EventHandler<ActionEvent>() {
@@ -187,15 +154,7 @@ public class Painter extends Application {
                 double angle1 = Double.parseDouble(angle.getText());
                 Point2D p = new Point2D(arr[0][0], arr[0][1]);
                 arr = Spin.spin(arr, p, angle1);
-                Point2D p0 = new Point2D(arr[0][0], arr[0][1]);
-                Point2D p1 = new Point2D(arr[1][0], arr[1][1]);
-                Point2D p2 = new Point2D(arr[2][0], arr[2][1]);
-                Point2D p3 = new Point2D(arr[3][0], arr[3][1]);
-
-                context.strokeLine(p0.getX(), p0.getY(), p1.getX(), p1.getY());
-                context.strokeLine(p0.getX(), p0.getY(), p2.getX(), p2.getY());
-                context.strokeLine(p2.getX(), p2.getY(), p3.getX(), p3.getY());
-                context.strokeLine(p3.getX(), p3.getY(), p1.getX(), p1.getY());
+                draw(arr, context);
 
             }
         });
@@ -210,15 +169,7 @@ public class Painter extends Application {
 
                 context.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-                Point2D p0 = new Point2D(arr[0][0], arr[0][1]);
-                Point2D p1 = new Point2D(arr[1][0], arr[1][1]);
-                Point2D p2 = new Point2D(arr[2][0], arr[2][1]);
-                Point2D p3 = new Point2D(arr[3][0], arr[3][1]);
-
-                context.strokeLine(p0.getX(), p0.getY(), p1.getX(), p1.getY());
-                context.strokeLine(p0.getX(), p0.getY(), p2.getX(), p2.getY());
-                context.strokeLine(p2.getX(), p2.getY(), p3.getX(), p3.getY());
-                context.strokeLine(p3.getX(), p3.getY(), p1.getX(), p1.getY());
+                draw(arr, context);
 
                 context.strokeLine(CANVASWIDTH / 2, 0, CANVASWIDTH / 2, CANVASHEIGHT);
                 context.strokeLine(0, CANVASHEIGHT / 2, CANVASWIDTH, CANVASHEIGHT / 2);
@@ -235,6 +186,18 @@ public class Painter extends Application {
         primaryStage.setTitle("Drawing");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void draw(double[][] arr, GraphicsContext context) {
+        Point2D p0 = new Point2D(arr[0][0], arr[0][1]);
+        Point2D p1 = new Point2D(arr[1][0], arr[1][1]);
+        Point2D p2 = new Point2D(arr[2][0], arr[2][1]);
+        Point2D p3 = new Point2D(arr[3][0], arr[3][1]);
+
+        context.strokeLine(p0.getX(), p0.getY(), p1.getX(), p1.getY());
+        context.strokeLine(p0.getX(), p0.getY(), p2.getX(), p2.getY());
+        context.strokeLine(p2.getX(), p2.getY(), p3.getX(), p3.getY());
+        context.strokeLine(p3.getX(), p3.getY(), p1.getX(), p1.getY());
     }
 
     public static void main(String[] args) {

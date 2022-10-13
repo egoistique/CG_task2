@@ -2,8 +2,6 @@ package com.example.t2fx;
 
 import javafx.geometry.Point2D;
 
-import java.util.Scanner;
-
 public class Create {
     public static double[][] create(double x0, double y0, double wight, double height){
         Point2D p0 = new Point2D(x0, y0);
