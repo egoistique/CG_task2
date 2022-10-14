@@ -4,7 +4,7 @@ import javafx.geometry.Point2D;
 
 public class Spin {
     public static double[][] spin(double[][] arr, Point2D p, double angle) {
-        //массив для смещения на нач. координат
+        //матрица для смещения на нач. координат
         double[][] temp = {{1, 0, 0}, {0, 1, 0}, {-p.getX(), -p.getY(), 1}};
         double[][] newMatr = new double[4][3];
 

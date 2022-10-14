@@ -1,6 +1,7 @@
 package com.example.t2fx;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -78,6 +79,8 @@ public class Painter extends Application {
 
         cleanBox.setSpacing(10);
         cleanBox.getChildren().add(buttonClean);
+        cleanBox.getChildren().add(buttonCombo);
+        cleanBox.getChildren().add(comboField);
 
         buttonDraw.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -94,6 +97,7 @@ public class Painter extends Application {
         buttonTranslation.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                clear(context);
                 context.setStroke(Color.CORAL);
 
                 double[][] arr = Create.create(Double.parseDouble(x0.getText()) + CANVASWIDTH / 2,
@@ -112,6 +116,7 @@ public class Painter extends Application {
         buttonScale.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                clear(context);
                 context.setStroke(Color.BLUEVIOLET);
 
                 double[][] arr = Create.create(Double.parseDouble(x0.getText()) + CANVASWIDTH / 2,
@@ -129,6 +134,7 @@ public class Painter extends Application {
         buttonCompression.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                clear(context);
                 context.setStroke(Color.MAGENTA);
 
                 double[][] arr = Create.create(Double.parseDouble(x0.getText()) + CANVASWIDTH / 2,
@@ -144,6 +150,7 @@ public class Painter extends Application {
         buttonSpin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                clear(context);
                 context.setStroke(Color.PLUM);
                 double[][] arr = Create.create(Double.parseDouble(x0.getText()) + CANVASWIDTH / 2,
                         Double.parseDouble(y0.getText()) + CANVASHEIGHT / 2,
@@ -160,17 +167,22 @@ public class Painter extends Application {
         buttonClean.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                context.setStroke(Color.BLACK);
-                double[][] arr = Create.create(Double.parseDouble(x0.getText()) + CANVASWIDTH / 2,
-                        Double.parseDouble(y0.getText()) + CANVASHEIGHT / 2,
-                        Double.parseDouble(width.getText()), Double.parseDouble(height.getText()));
+                clear(context);
+            }
+        });
 
-                context.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        buttonCombo.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                clear(context);
+                String s = comboField.getText();
+                String[] st = s.split("");
+                List<Integer> nums = new ArrayList<>();
+                for(int i = 0; i < st.length; i++){
+                    nums.add(Integer.parseInt(st[i]));
+                }
 
-                draw(arr, context);
-
-                context.strokeLine(CANVASWIDTH / 2, 0, CANVASWIDTH / 2, CANVASHEIGHT);
-                context.strokeLine(0, CANVASHEIGHT / 2, CANVASWIDTH, CANVASHEIGHT / 2);
+                combo(context, nums);
             }
         });
 
@@ -184,6 +196,82 @@ public class Painter extends Application {
         primaryStage.setTitle("Drawing");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void combo(GraphicsContext context, List<Integer> nums){
+        double[][] arr = Create.create(Double.parseDouble(x0.getText()) + CANVASWIDTH / 2,
+                Double.parseDouble(y0.getText()) + CANVASHEIGHT / 2,
+                Double.parseDouble(width.getText()), Double.parseDouble(height.getText()));;
+        if (nums.contains(1)){
+            arr = tra(context, arr);
+        }
+        if (nums.contains(2)){
+            arr = scale(context, arr);
+        }
+        if (nums.contains(3)){
+            arr = comp(context, arr);
+        }
+        if (nums.contains(4)){
+            arr = spin(context, arr);
+        }
+        draw(arr, context);
+    }
+
+    private double[][] tra(GraphicsContext context, double[][] arr){
+
+        double x = Double.parseDouble(xTran.getText());
+        double y = Double.parseDouble(yTran.getText());
+
+        arr = Translation.translation(arr, x, y);
+
+        //draw(arr, context);
+        return arr;
+    }
+
+    private double[][] comp(GraphicsContext context, double[][] arr){
+        clear(context);
+        context.setStroke(Color.MAGENTA);
+        double f = Double.parseDouble(amount.getText());
+        Point2D p = new Point2D(arr[0][0], arr[0][1]);
+        arr = Compression.compression(arr, p, f);
+        draw(arr, context);
+        return arr;
+    }
+
+    private double[][] scale(GraphicsContext context, double[][] arr){
+        clear(context);
+        context.setStroke(Color.BLUEVIOLET);
+
+        double s = Double.parseDouble(scale.getText());
+
+        Point2D p = new Point2D(arr[0][0], arr[0][1]);
+        arr = Scale.scale(arr, p, s);
+        draw(arr, context);
+        return arr;
+    }
+
+    private double[][] spin(GraphicsContext context, double[][] arr){
+        clear(context);
+        context.setStroke(Color.PLUM);
+
+        double angle1 = Double.parseDouble(angle.getText());
+        Point2D p = new Point2D(arr[0][0], arr[0][1]);
+        arr = Spin.spin(arr, p, angle1);
+        //draw(arr, context);
+        return arr;
+    }
+    private void clear(GraphicsContext context){
+        context.setStroke(Color.BLACK);
+        double[][] arr = Create.create(Double.parseDouble(x0.getText()) + CANVASWIDTH / 2,
+                Double.parseDouble(y0.getText()) + CANVASHEIGHT / 2,
+                Double.parseDouble(width.getText()), Double.parseDouble(height.getText()));
+
+        context.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+        draw(arr, context);
+
+        context.strokeLine(CANVASWIDTH / 2, 0, CANVASWIDTH / 2, CANVASHEIGHT);
+        context.strokeLine(0, CANVASHEIGHT / 2, CANVASWIDTH, CANVASHEIGHT / 2);
     }
 
     private void draw(double[][] arr, GraphicsContext context) {
@@ -214,8 +302,9 @@ public class Painter extends Application {
     Button buttonTranslation = new Button("1. Перенос");
     Button buttonScale = new Button("2. Масштабирование");
     Button buttonCompression = new Button("3. Сжатие к прямой");
-    Button buttonSpin = new Button("4. Поврот - вращение");
+    Button buttonSpin = new Button("4. Поворот - вращение");
     Button buttonClean = new Button("Очистить экран от преобразований");
+    Button buttonCombo = new Button("Комбинация преобразований");
 
     HBox drawBox = new HBox();
     HBox translationBox = new HBox();
@@ -233,6 +322,7 @@ public class Painter extends Application {
     TextField scale = new TextField();
     TextField amount = new TextField();
     TextField angle = new TextField();
+    TextField comboField = new TextField();
 
     final private int WIDTH = 1000;
     final private int HEIGHT = 800;
